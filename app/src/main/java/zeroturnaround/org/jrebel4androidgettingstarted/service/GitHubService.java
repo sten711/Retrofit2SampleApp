@@ -14,7 +14,7 @@ import retrofit2.http.Path;
 /**
  * Created by shelajev on 16/12/15.
  */
-interface GitHubService {
+public interface GitHubService {
     @GET("repos/{owner}/{repo}/contributors")
     Call<List<Contributor>> repoContributors(
             @Path("owner") String owner,
@@ -26,7 +26,7 @@ interface GitHubService {
 
 
 
-    public static final Retrofit retrofit = new Retrofit.Builder()
+    Retrofit retrofit = new Retrofit.Builder()
             .baseUrl("https://api.github.com/")
             .addConverterFactory(GsonConverterFactory.create()).client(okHttpClient)
             .build();
@@ -34,6 +34,8 @@ interface GitHubService {
     @GET("/users/{username}")
     Call<Contributor>user(
             @Path("username")String login);
+
+
 }
 
 

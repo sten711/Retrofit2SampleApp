@@ -9,20 +9,25 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+
 import com.f2prateek.dart.Dart;
 import com.f2prateek.dart.InjectExtra;
 
-import org.parceler.transfuse.annotations.Bind;
+
 
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 import zeroturnaround.org.jrebel4androidgettingstarted.ContributorsApplication;
 import zeroturnaround.org.jrebel4androidgettingstarted.R;
 import zeroturnaround.org.jrebel4androidgettingstarted.imageloader.impl.ImageLoader;
 import zeroturnaround.org.jrebel4androidgettingstarted.service.Contributor;
 import zeroturnaround.org.jrebel4androidgettingstarted.service.ContributorsService;
+import zeroturnaround.org.jrebel4androidgettingstarted.service.*;
 
 
 /**
@@ -82,19 +87,17 @@ public class ContributorFragment extends Fragment implements ContributorsService
 
     @Override
     public void onContributorsLoaded(List<Contributor> contributors) {
-
     }
 
     @Override
     public void onContributorsLoadFailed(String message) {
-
     }
 
     @Override
     public void onContributorLoaded(Contributor contributor) {
         bio_textview.setText(contributor.getBio());
         email_textview.setText(contributor.getEmail());
-        company_textview.setText(contributor.getCompany());
+        company_textview.setText(contributor.getCompany() + ", " + contributor.getLocation());
         name_textview.setText(contributor.getName());
     }
 
@@ -103,4 +106,5 @@ public class ContributorFragment extends Fragment implements ContributorsService
         super.onDestroy();
         contributorService.removeListener(this);
     }
+
 }

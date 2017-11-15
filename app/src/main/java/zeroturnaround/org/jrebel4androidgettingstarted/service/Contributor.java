@@ -15,6 +15,8 @@ public class Contributor {
     String email;
     String name;
     String company;
+    String location;
+    String repos_url;
 
 
     public String getLogin() {
@@ -43,6 +45,14 @@ public class Contributor {
 
     public String getCompany() {
         return company;
+    }
+
+    public String getLocation() {
+        return location;
+    }
+
+    public String getReposUrl() {
+        return repos_url;
     }
 
     @Override

@@ -1,9 +1,7 @@
 package zeroturnaround.org.jrebel4androidgettingstarted.service;
 
 import android.text.TextUtils;
-import android.util.Log;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,13 +16,12 @@ import timber.log.Timber;
 public class ContributorsService {
 
     private ArrayList<ContributorsListener> listeners = new ArrayList<>();
-    final GitHubService gitHubService = GitHubService.retrofit.create(GitHubService.class);
+    private final GitHubService gitHubService = GitHubService.retrofit.create(GitHubService.class);
     private List<Contributor> contributors = new ArrayList<>();
 
     public void addListener(ContributorsListener listener) {
         listeners.add(listener);
     }
-
     public void removeListener(ContributorsListener listener) {
         listeners.remove(listener);
     }
@@ -40,11 +37,12 @@ public class ContributorsService {
         call.enqueue(new Callback<List<Contributor>>() {
             @Override
             public void onResponse(Call<List<Contributor>> call, Response<List<Contributor>> response) {
-                if (response.isSuccess()) {
+                if (response.isSuccessful()) {
                     contributors = response.body();
                     for (ContributorsListener listener : listeners) {
                         listener.onContributorsLoaded(contributors);
                     }
+
                 } else {
                     for (ContributorsListener listener : listeners) {
                         listener.onContributorsLoadFailed(response.message());
@@ -62,7 +60,7 @@ public class ContributorsService {
         });
     }
 
-    public void requestUser(Contributor contributor) {
+    public void requestUser(final Contributor contributor) {
         Timber.d("Requesting more about " + contributor);
         Call<Contributor> contributorCall = gitHubService.user(contributor.getLogin());
         contributorCall.enqueue(new Callback<Contributor>() {
@@ -70,6 +68,7 @@ public class ContributorsService {
             public void onResponse(Call<Contributor> call, Response<Contributor> response) {
                 for (ContributorsListener listener : listeners) {
                     listener.onContributorLoaded(response.body());
+
                 }
             }
 
