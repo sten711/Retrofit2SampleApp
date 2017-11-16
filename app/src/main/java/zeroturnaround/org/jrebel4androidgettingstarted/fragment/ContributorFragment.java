@@ -19,15 +19,12 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 import zeroturnaround.org.jrebel4androidgettingstarted.ContributorsApplication;
 import zeroturnaround.org.jrebel4androidgettingstarted.R;
 import zeroturnaround.org.jrebel4androidgettingstarted.imageloader.impl.ImageLoader;
 import zeroturnaround.org.jrebel4androidgettingstarted.service.Contributor;
 import zeroturnaround.org.jrebel4androidgettingstarted.service.ContributorsService;
-import zeroturnaround.org.jrebel4androidgettingstarted.service.*;
+
 
 
 /**
@@ -55,7 +52,6 @@ public class ContributorFragment extends Fragment implements ContributorsService
 
     public static ContributorFragment newInstance() {
         ContributorFragment fragment = new ContributorFragment();
-
         return fragment;
     }
 
@@ -78,7 +74,6 @@ public class ContributorFragment extends Fragment implements ContributorsService
         onContributorLoaded(contributor);
         contributorService.requestUser(contributor);
 
-
         ImageLoader imageLoader = new ImageLoader();
         imageLoader.loadImage(contributor.getAvatarUrl(), avatar_imageview);
 
@@ -100,6 +95,8 @@ public class ContributorFragment extends Fragment implements ContributorsService
         company_textview.setText(contributor.getCompany() + ", " + contributor.getLocation());
         name_textview.setText(contributor.getName());
     }
+
+
 
     @Override
     public void onDestroy() {
