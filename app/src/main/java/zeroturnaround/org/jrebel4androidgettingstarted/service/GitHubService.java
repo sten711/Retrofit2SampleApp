@@ -15,6 +15,7 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 import retrofit2.http.GET;
 import retrofit2.http.Path;
+import retrofit2.http.Url;
 
 
 /**
@@ -35,7 +36,7 @@ public interface GitHubService {
             HttpUrl originalHttpUrl = original.url();
 
             HttpUrl.Builder originalUrlBuilder = originalHttpUrl.newBuilder();
-            originalUrlBuilder.addQueryParameter("access_token", "YOUR VALUE HERE");
+            originalUrlBuilder.addQueryParameter("access_token", "YOUR_TOKEN");
 
             HttpUrl url = originalUrlBuilder.build();
 
@@ -55,6 +56,9 @@ public interface GitHubService {
     @GET("/users/{username}")
     Call<Contributor>user(
             @Path("username")String login);
+
+    @GET
+    Call<List<Repository>> getRepos(@Url String url);
 
 }
 

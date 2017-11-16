@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 
 import com.f2prateek.dart.Dart;
@@ -19,12 +20,16 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 import zeroturnaround.org.jrebel4androidgettingstarted.ContributorsApplication;
 import zeroturnaround.org.jrebel4androidgettingstarted.R;
 import zeroturnaround.org.jrebel4androidgettingstarted.imageloader.impl.ImageLoader;
 import zeroturnaround.org.jrebel4androidgettingstarted.service.Contributor;
 import zeroturnaround.org.jrebel4androidgettingstarted.service.ContributorsService;
-
+import zeroturnaround.org.jrebel4androidgettingstarted.service.GitHubService;
+import zeroturnaround.org.jrebel4androidgettingstarted.service.Repository;
 
 
 /**
@@ -41,6 +46,7 @@ public class ContributorFragment extends Fragment implements ContributorsService
     @BindView(R.id.textview_email) TextView email_textview;
     @BindView(R.id.textview_name) TextView name_textview;
     @BindView(R.id.contributor_avatar) ImageView avatar_imageview;
+    @BindView(R.id.textview_repos) TextView repos_textview;
 
     private ContributorsService contributorService;
 
@@ -94,6 +100,19 @@ public class ContributorFragment extends Fragment implements ContributorsService
         email_textview.setText(contributor.getEmail());
         company_textview.setText(contributor.getCompany() + ", " + contributor.getLocation());
         name_textview.setText(contributor.getName());
+
+        GitHubService gitHubService = GitHubService.retrofit.create(GitHubService.class);
+        gitHubService.getRepos(contributor.getReposUrl()).enqueue(new Callback<List<Repository>>() {
+            @Override
+            public void onResponse(Call<List<Repository>> call, Response<List<Repository>> response) {
+                repos_textview.setText("Found repos: " + response.body().size());
+            }
+
+            @Override
+            public void onFailure(Call<List<Repository>> call, Throwable t) {
+
+            }
+        });
     }
 
 
